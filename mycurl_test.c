@@ -1,14 +1,71 @@
 #include "mycurl.h"
-#include <stdlib.h>	/* for exit */
-#include <getopt.h>	/* for getopt_long */
+#include <stdlib.h>	/* exit */
+#include <string.h>	/* memset */
+#include <getopt.h>	/* getopt_long */
 
 /* Flag set by ‘--verbose’. */
 static int verbose_flag;
 
+static struct header_list *alloc_header(char *optarg)
+{
+	/* allocate memory for new node */
+	struct header_list *node = (struct header_list *)malloc(sizeof(struct header_list));
+	if (node == NULL)
+	{
+		fprintf(stderr, "Out of memory\n");
+		return NULL;
+	}
+	return node;
+}
+
+/* Add a new header to the front of the list */
+static int add_header_to_list(char *optarg, struct header_list **head_ref)
+{
+	struct header_list *new_header = alloc_header(optarg);
+	if (new_header == NULL)
+		return -1;
+
+	new_header->val = optarg;
+	new_header->next = (*head_ref);
+	(*head_ref) = new_header;
+
+	return 0;
+}
+
+static void print(struct header_list **head_ref)
+{
+	struct header_list *temp = (*head_ref);
+
+	while (temp != NULL)
+	{
+		printf("Data: %s\n", temp->val);
+		temp = temp->next;
+	}
+}
+
+/* Free the list of headers */
+static void free_header_list(struct header_list **head_ref)
+{
+	struct header_list *current = *head_ref;
+	struct header_list *next;
+
+	while (current != NULL)
+	{
+		next = current->next;
+		free(current);
+		current = next;
+	}
+	*head_ref = NULL;
+}
+
 int main(int argc, char *argv[])
 {
 	int c;
-	int n_requests = 0; /* number of HTTP requests to make */
+	int ret = 0;
+	int n_req = 0; /* number of HTTP requests to make */
+	struct header_list *headers = NULL;
+	struct http_request req;
+	memset(&req, 0, sizeof(struct http_request));
 
 	while (1)
 	{
@@ -53,11 +110,20 @@ int main(int argc, char *argv[])
 
 			case 'H':
 				fprintf(stdout, "Header - %s\n", optarg);
+				ret = add_header_to_list(optarg, &headers);
+				if (ret == -1)
+				{
+					fprintf(stdout, "Error while adding header to the list\n", optarg);
+					exit(EXIT_FAILURE);
+				}
 				break;
 
 			case 'n':
-				fprintf(stdout, "Number of requests - %s\n", optarg);
-				n_requests = atoi(optarg);
+				n_req = atoi(optarg);
+				if (n_req < 0)
+					n_req = 1;	/* set default for negative requests */
+				fprintf(stdout, "Number of requests provided - %s, passed to http req - %d\n", optarg, n_req);
+				req.n_req = n_req;
 				break;
 
 			case 'U':
@@ -97,6 +163,10 @@ int main(int argc, char *argv[])
 			fprintf (stdout, "%s ", argv[optind++]);
 		putchar ('\n');
 	}
+
+	print(&headers);
+	/* free the list of headers */
+	free_header_list(&headers);
 
 	exit(EXIT_SUCCESS);
 }
