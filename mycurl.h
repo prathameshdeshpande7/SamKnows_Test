@@ -2,7 +2,6 @@
 #define MYCURL_H
 
 #include <stdio.h>
-
-void say_hello();
+#include <curl/curl.h>
 
 #endif /* MYCURL_H */
