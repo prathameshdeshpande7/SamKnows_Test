@@ -2,9 +2,57 @@
 #include <stdlib.h>	/* exit */
 #include <string.h>	/* memset */
 #include <getopt.h>	/* getopt_long */
+#include <sys/time.h>	/* gettimeofday */
+#include <signal.h>
+
 
 /* Flag set by ‘--verbose’. */
 static int verbose_flag;
+
+/* global variables to deal with incoming signals */
+static int end_of_game_pipe[2];
+
+double tv_to_double( struct timeval tv )
+{
+	return tv.tv_sec + tv.tv_usec * 0.000001;
+}
+
+/*
+ * realt
+ *
+ * A little function to calculate the current time (in second since some
+ * random date) as a double.
+ */
+
+double realt(void)
+{
+	struct timeval  tv;
+	struct timezone ov;
+
+	gettimeofday(&tv, &ov);
+
+	return tv_to_double(tv);
+}
+
+/*
+ * signal handler
+ */
+static void control_c_handler(int signum, siginfo_t *si, void *uc_)
+{
+	static double last_time = 0.0;
+
+	logmsg("pid %d received signal %d", getpid(), signum);
+
+	/* ^C^C */
+	if (realt() - last_time < 2.0)
+		exit(EXIT_SUCCESS);
+
+	last_time = realt();
+
+	char c = 'x';
+	if (end_of_game_pipe[1] >= 0)
+		write(end_of_game_pipe[1], &c, 1);
+}
 
 static struct header_list *alloc_header(char *optarg)
 {
@@ -72,6 +120,25 @@ int main(int argc, char *argv[])
 	memset(&req, 0, sizeof(struct http_request));
 	memset(&resp, 0, sizeof(struct http_response));
 	memset(&total, 0, sizeof(struct http_response));
+
+	sigset_t set;
+	sigemptyset(&set);
+	sigaddset(&set, SIGPIPE);
+	pthread_sigmask(SIG_BLOCK, &set, 0); /* ignore sigpipe */
+
+	struct sigaction s;
+	memset(&s, 0, sizeof(s));
+
+	s.sa_flags = SA_SIGINFO; /* not SA_RESTART */
+	s.sa_sigaction = control_c_handler;
+	sigemptyset(&s.sa_mask);
+
+	sigaction(SIGTERM, &s, 0);
+
+	s.sa_flags = SA_SIGINFO | SA_RESTART;
+	sigaction(SIGINT, &s, 0);
+
+	pipe(end_of_game_pipe);
 
 	while (1)
 	{
