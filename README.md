@@ -58,15 +58,6 @@ TODO
 - For non-blocking behavior, curl_multi_perform needs to be used. This will
 enable us to issue simultaneous requests in parallel and speed-up processing.
 
-- Currently, all the source and header files for the library and the test
-application are in the same root folder. In the next version, source code can
-be modularized in a folder structure such as library code in lib/ and test
-application in src/ or a similar structure.
-
-- The build and run scripts can also have their own subfolders.
-The intermediate object files and shared object executable for the library
-merit their own build directory.
-
 - Support for other HTTP request types such as PUT, POST and DELETE needs to
 be added.
 
