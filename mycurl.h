@@ -42,7 +42,7 @@ struct http_response *send_http_request(struct http_request *req);
 /* Add the values from the response */
 void add_stats(struct http_response *total, struct http_response *resp);
 
-/* compute median */
+/* Compute median */
 void compute_median(struct http_response *total, int n_requests);
 
 /* Print the HTTP response */

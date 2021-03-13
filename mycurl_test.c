@@ -196,6 +196,8 @@ int main(int argc, char *argv[])
 	compute_median(total, req.n_req);
 	print_http_response(total);
 
+	free(total);
+
 	/* free the list of headers */
 	free_header_list(&headers);
 

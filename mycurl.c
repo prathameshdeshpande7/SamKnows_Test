@@ -7,6 +7,7 @@ struct memory {
 	size_t len;
 };
 
+/* Print the HTTP response */
 void print_http_response(struct http_response *resp)
 {
 	fprintf(stdout, "SKTEST; ");
@@ -21,6 +22,7 @@ void print_http_response(struct http_response *resp)
 	fprintf(stdout, "\n");
 }
 
+/* Add the values from the response */
 void add_stats(struct http_response *total, struct http_response *resp)
 {
 	if (resp == NULL)
@@ -38,7 +40,7 @@ void add_stats(struct http_response *total, struct http_response *resp)
 	total->total_time += resp->total_time;
 }
 
-/* compute median */
+/* Compute median */
 void compute_median(struct http_response *total, int n_requests)
 {
 	total->namelookup_time /= n_requests;
