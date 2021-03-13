@@ -2,4 +2,6 @@
 
 make clean
 make all
-sudo make install
+
+# On Unix-like OSes
+export LD_LIBRARY_PATH=lib
