@@ -7,17 +7,21 @@ This is the main README file for this project.
 How to build and install
 ------------------------
 
+On Linux
+
 - make clean
 
 - make all
 
-- sudo make install
+- export LD_LIBRARY_PATH=lib
 
-Use the above commands to clean, compile and install the test program.
+Use the above commands to clean and compile the test program.
 Alternatively, issue ./build.sh script which will do the above things.
 
 How to run
 ----------
+
+On Linux
 
 - Use run.sh script to configure the number of requests, URL to send HTTP
 request to, pass headers to the request and set the request type.
