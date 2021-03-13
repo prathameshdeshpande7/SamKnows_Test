@@ -7,19 +7,48 @@ struct memory {
 	size_t len;
 };
 
+/*
+ * log a message to the syslog and to stdout
+ */
+int logmsg(const char *format, ...)
+{
+	char buffer[1024];
+
+	va_list args;
+	va_start(args, format);
+	vsnprintf(buffer, sizeof(buffer), format, args);
+	buffer[sizeof(buffer) - 1] = '\0';
+	va_end(args);
+
+	write(2, buffer, strlen(buffer));
+	syslog(LOG_DAEMON|LOG_INFO, "%s", buffer);
+
+	return 0;
+}
+
 /* Print the HTTP response */
 void print_http_response(struct http_response *resp)
 {
-	fprintf(stdout, "SKTEST; ");
-	fprintf(stdout, "IP addr: %s; ", resp->ip);
-	fprintf(stdout, "HTTP resp code: %ld; ", resp->response_code);
-	fprintf(stdout, "name_lookup: %f; ", resp->namelookup_time);
-	fprintf(stdout, "connect_time: %f; ", resp->connect_time);
-	fprintf(stdout, "app_connect: %f; ", resp->app_connect_time);
-	fprintf(stdout, "pre_transfer: %f; ", resp->pre_transfer_time);
-	fprintf(stdout, "start_transfer: %f; ", resp->start_transfer_time);
-	fprintf(stdout, "total_time: %f;", resp->total_time);
-	fprintf(stdout, "\n");
+	logmsg("SKTEST; IP addr: %s; HTTP resp code: %ld; "
+		"name_lookup: %f; connect_time: %f; "
+		"app_connect: %f; pre_transfer: %f; "
+		"start_transfer: %f; total_time: %f;\n",
+		resp->ip, resp->response_code,
+		resp->namelookup_time, resp->connect_time,
+		resp->app_connect_time,	resp->pre_transfer_time,
+		resp->start_transfer_time, resp->total_time);
+}
+
+/* Utility function to copy IP address */
+void copy_ip_addr(char *dst, char *src)
+{
+	int i = 0;
+	while (src[i] != '\0')
+	{
+		dst[i] = src[i];
+		i++;
+	}
+	dst[i] = '\0';
 }
 
 /* Add the values from the response */
@@ -30,7 +59,7 @@ void add_stats(struct http_response *total, struct http_response *resp)
 		return;
 	}
 
-	total->ip = resp->ip;
+	copy_ip_addr(total->ip, resp->ip);
 	total->response_code = resp->response_code;
 	total->namelookup_time += resp->namelookup_time;
 	total->connect_time += resp->connect_time;
@@ -70,21 +99,18 @@ size_t write_cb(void *data, size_t size, size_t nmemb, void *userdata)
 }
 
 /* Extract various statistics from the responses */
-struct http_response *extract_stats(CURL *curl)
+void extract_stats(CURL *curl, struct http_response *resp)
 {
+	char *ip;
 	CURLcode res = CURLE_OK;
-	struct http_response *resp;
 	//curl_off_t speed_upload, total_time;
 
-	resp = (struct http_response *)calloc(1, sizeof(struct http_response));
-	if (resp == NULL)
-	{
-		fprintf(stderr, "Out of memory\n");
-		return NULL;
-	}
-
 	/* get IP address of last connection */
-	res = curl_easy_getinfo(curl, CURLINFO_PRIMARY_IP, &resp->ip);
+	res = curl_easy_getinfo(curl, CURLINFO_PRIMARY_IP, &ip);
+	if (CURLE_OK == res)
+	{
+		copy_ip_addr(resp->ip, ip);
+	}
 
 	/* get the last response code */
 	res = curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &resp->response_code);
@@ -110,7 +136,7 @@ struct http_response *extract_stats(CURL *curl)
 #if 0
 	curl_easy_getinfo(curl, CURLINFO_SPEED_UPLOAD_T, &speed_upload);
 	curl_easy_getinfo(curl, CURLINFO_TOTAL_TIME_T, &total_time);
-	fprintf(stderr, "Speed: %" CURL_FORMAT_CURL_OFF_T " bytes/sec during %"
+	logmsg("Speed: %" CURL_FORMAT_CURL_OFF_T " bytes/sec during %"
 		CURL_FORMAT_CURL_OFF_T ".%06ld seconds\n",
 		speed_upload,
 		(total_time / 1000000), (long)(total_time % 1000000));
@@ -118,25 +144,21 @@ struct http_response *extract_stats(CURL *curl)
 
 	if (res != CURLE_OK)
 	{
-		fprintf(stderr, "Returned error code: %d\n", res);
-		free(resp);
-		return NULL;
+		logmsg("Returned error code: %d\n", res);
 	}
-	return resp;
 }
 
 /* API to send HTTP request to an URL */
-struct http_response *send_http_request(struct http_request *req)
+void send_http_request(struct http_request *req, struct http_response *resp)
 {
 	CURL *curl;
 	CURLcode res = CURLE_OK;
 	struct curl_slist *list = NULL;
-	struct http_response *resp = NULL;
 
 	if (req == NULL)
 	{
-		fprintf(stderr, "HTTP request is NULL! Aborting...\n");
-		return NULL;
+		logmsg("HTTP request is NULL! Aborting...\n");
+		return;
 	}
 
 	struct header_list *temp = req->h_list;
@@ -181,12 +203,12 @@ struct http_response *send_http_request(struct http_request *req)
 		res = curl_easy_perform(curl);
 		if(res != CURLE_OK)
 		{
-			fprintf(stderr, "%d:%s\n", res, curl_easy_strerror(res));
+			logmsg("%d:%s\n", res, curl_easy_strerror(res));
 		}
 		else
 		{
 			/* now extract transfer info */
-			resp = extract_stats(curl);
+			extract_stats(curl, resp);
 
 			//printf("Total received bytes: %zu\n", chunk.len);
 			//printf("Received data:/n%s\n", chunk.buffer);
@@ -198,5 +220,4 @@ struct http_response *send_http_request(struct http_request *req)
 		/* always cleanup */
 		curl_easy_cleanup(curl);
 	}
-	return resp;
 }

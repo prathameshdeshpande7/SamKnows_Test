@@ -12,8 +12,7 @@ static struct header_list *alloc_header(char *optarg)
 	struct header_list *node = (struct header_list *)malloc(sizeof(struct header_list));
 	if (node == NULL)
 	{
-		fprintf(stderr, "Out of memory\n");
-		return NULL;
+		fatal("Out of memory\n");
 	}
 	return node;
 }
@@ -68,9 +67,11 @@ int main(int argc, char *argv[])
 	char *request_type;
 	char *url;
 	struct http_request req;
-	struct http_response *resp;
-	struct http_response *total;
+	struct http_response resp;
+	struct http_response total;
 	memset(&req, 0, sizeof(struct http_request));
+	memset(&resp, 0, sizeof(struct http_response));
+	memset(&total, 0, sizeof(struct http_response));
 
 	while (1)
 	{
@@ -99,27 +100,27 @@ int main(int argc, char *argv[])
 		switch (c)
 		{
 			case 0:
-				fprintf(stdout, "long option %s", long_options[option_index].name);
+				logmsg("long option %s", long_options[option_index].name);
 				if (optarg)
-					fprintf(stdout, "with arg %s", optarg);
-				fprintf(stdout, "\n");
+					logmsg("with arg %s", optarg);
+				logmsg("\n");
 				break;
 
 			case 1:
-				fprintf(stdout, "regular argument '%s'\n", optarg); /* non-option arg */
+				logmsg("regular argument '%s'\n", optarg); /* non-option arg */
 				break;
 
 			case 'X':
-				fprintf(stdout, "Request - %s\n", optarg);
+				logmsg("Request - %s\n", optarg);
 				req.req_type = optarg;
 				break;
 
 			case 'H':
-				fprintf(stdout, "Header - \"%s\"\n", optarg);
+				logmsg("Header - \"%s\"\n", optarg);
 				ret = add_header_to_list(optarg, &headers);
 				if (ret == -1)
 				{
-					fprintf(stdout, "Error while adding header to the list\n", optarg);
+					logmsg("Error while adding header to the list\n", optarg);
 					exit(EXIT_FAILURE);
 				}
 				break;
@@ -128,33 +129,33 @@ int main(int argc, char *argv[])
 				n_req = atoi(optarg);
 				if (n_req < 0)
 					n_req = 1;	/* set default for negative requests */
-				fprintf(stdout, "Number of requests provided - %s, passed to http req - %d\n", optarg, n_req);
+				logmsg("Number of requests provided - %s, passed to http req - %d\n", optarg, n_req);
 				req.n_req = n_req;
 				break;
 
 			case 'U':
-				fprintf(stdout, "URL - %s\n", optarg);
+				logmsg("URL - %s\n", optarg);
 				req.url = optarg;
 				break;
 
 			case 'h':
-				fprintf(stdout, "Usage: %s -H \"Accept: application/json\" -H \"Content-Type: application/json\" -X GET http://google.com\n", argv[0]);
+				logmsg("Usage: %s -H \"Accept: application/json\" -H \"Content-Type: application/json\" -X GET http://google.com\n", argv[0]);
 				break;
 
 			case 'v':
-				fprintf(stdout, "Verbose\n");
+				logmsg("Verbose\n");
 				break;
 
 			case '?':
-				fprintf(stderr, "Unknown option: %c\n", optopt);
+				logmsg("Unknown option: %c\n", optopt);
 				break;
 
 			case ':':
-				fprintf(stderr, "Missing option for %c\n", optopt);
+				logmsg("Missing option for %c\n", optopt);
 				break;
 
 			default:
-				fprintf(stdout, "?? getopt returned character code 0x%x ??\n", c);
+				logmsg("?? getopt returned character code 0x%x ??\n", c);
 				break;
 		}
 	}
@@ -165,38 +166,26 @@ int main(int argc, char *argv[])
 	/* Print any remaining command line arguments (not options). */
 	if (optind < argc)
 	{
-		fprintf (stdout, "non-option ARGV-elements: ");
+		logmsg("non-option ARGV-elements: ");
 		while (optind < argc)
-			fprintf (stdout, "%s ", argv[optind++]);
+			logmsg("%s ", argv[optind++]);
 		putchar ('\n');
 	}
 
 	req.h_list = headers;
 
-	total = (struct http_response *)calloc(1, sizeof(struct http_response));
-	if (total == NULL)
-	{
-		fprintf(stderr, "Out of memory\n");
-		/* free the list of headers */
-		free_header_list(&headers);
-
-		exit(EXIT_FAILURE);
-	}
-
 	for (requests = 0; requests < req.n_req; requests++)
 	{
-		resp = send_http_request(&req);
-		if (resp != NULL)
-		{
-			add_stats(total, resp);
-			print_http_response(resp);
-		}
-		free(resp);
+		logmsg("%03d ", requests + 1);
+		send_http_request(&req, &resp);
+		add_stats(&total, &resp);
+		print_http_response(&resp);
 	}
-	compute_median(total, req.n_req);
-	print_http_response(total);
+	compute_median(&total, req.n_req);
+	logmsg("\n");
 
-	free(total);
+	logmsg("Median of values\n");
+	print_http_response(&total);
 
 	/* free the list of headers */
 	free_header_list(&headers);
