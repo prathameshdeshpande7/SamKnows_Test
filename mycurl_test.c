@@ -63,10 +63,13 @@ int main(int argc, char *argv[])
 	int c;
 	int ret = 0;
 	int n_req = 0; /* number of HTTP requests to make */
+	int requests = 0;
 	struct header_list *headers = NULL;
 	char *request_type;
 	char *url;
 	struct http_request req;
+	struct http_response *resp;
+	struct http_response *total;
 	memset(&req, 0, sizeof(struct http_request));
 
 	while (1)
@@ -112,7 +115,7 @@ int main(int argc, char *argv[])
 				break;
 
 			case 'H':
-				fprintf(stdout, "Header - %s\n", optarg);
+				fprintf(stdout, "Header - \"%s\"\n", optarg);
 				ret = add_header_to_list(optarg, &headers);
 				if (ret == -1)
 				{
@@ -170,8 +173,28 @@ int main(int argc, char *argv[])
 
 	req.h_list = headers;
 
-	ret = send_http_request(&req);
-	fprintf (stdout, "Sent HTTP request with ret code: %d\n", ret);
+	total = (struct http_response *)calloc(1, sizeof(struct http_response));
+	if (total == NULL)
+	{
+		fprintf(stderr, "Out of memory\n");
+		/* free the list of headers */
+		free_header_list(&headers);
+
+		exit(EXIT_FAILURE);
+	}
+
+	for (requests = 0; requests < req.n_req; requests++)
+	{
+		resp = send_http_request(&req);
+		if (resp != NULL)
+		{
+			add_stats(total, resp);
+			print_http_response(resp);
+		}
+		free(resp);
+	}
+	compute_median(total, req.n_req);
+	print_http_response(total);
 
 	/* free the list of headers */
 	free_header_list(&headers);

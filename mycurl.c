@@ -7,6 +7,48 @@ struct memory {
 	size_t len;
 };
 
+void print_http_response(struct http_response *resp)
+{
+	fprintf(stdout, "SKTEST; ");
+	fprintf(stdout, "IP addr: %s; ", resp->ip);
+	fprintf(stdout, "HTTP resp code: %ld; ", resp->response_code);
+	fprintf(stdout, "name_lookup: %f; ", resp->namelookup_time);
+	fprintf(stdout, "connect_time: %f; ", resp->connect_time);
+	fprintf(stdout, "app_connect: %f; ", resp->app_connect_time);
+	fprintf(stdout, "pre_transfer: %f; ", resp->pre_transfer_time);
+	fprintf(stdout, "start_transfer: %f; ", resp->start_transfer_time);
+	fprintf(stdout, "total_time: %f;", resp->total_time);
+	fprintf(stdout, "\n");
+}
+
+void add_stats(struct http_response *total, struct http_response *resp)
+{
+	if (resp == NULL)
+	{
+		return;
+	}
+
+	total->ip = resp->ip;
+	total->response_code = resp->response_code;
+	total->namelookup_time += resp->namelookup_time;
+	total->connect_time += resp->connect_time;
+	total->app_connect_time += resp->app_connect_time;
+	total->pre_transfer_time += resp->pre_transfer_time;
+	total->start_transfer_time += resp->start_transfer_time;
+	total->total_time += resp->total_time;
+}
+
+/* compute median */
+void compute_median(struct http_response *total, int n_requests)
+{
+	total->namelookup_time /= n_requests;
+	total->connect_time /= n_requests;
+	total->app_connect_time /= n_requests;
+	total->pre_transfer_time /= n_requests;
+	total->start_transfer_time /= n_requests;
+	total->total_time /= n_requests;
+}
+
 size_t write_cb(void *data, size_t size, size_t nmemb, void *userdata)
 {
 	size_t realsize = size * nmemb;
@@ -25,23 +67,74 @@ size_t write_cb(void *data, size_t size, size_t nmemb, void *userdata)
 	return realsize;
 }
 
-/* API to send http request to a URL */
-int send_http_request(struct http_request *req)
+/* Extract various statistics from the responses */
+struct http_response *extract_stats(CURL *curl)
+{
+	CURLcode res = CURLE_OK;
+	struct http_response *resp;
+	//curl_off_t speed_upload, total_time;
+
+	resp = (struct http_response *)calloc(1, sizeof(struct http_response));
+	if (resp == NULL)
+	{
+		fprintf(stderr, "Out of memory\n");
+		return NULL;
+	}
+
+	/* get IP address of last connection */
+	res = curl_easy_getinfo(curl, CURLINFO_PRIMARY_IP, &resp->ip);
+
+	/* get the last response code */
+	res = curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &resp->response_code);
+
+	/* get the name lookup time */
+	res = curl_easy_getinfo(curl, CURLINFO_NAMELOOKUP_TIME, &resp->namelookup_time);
+
+	/* get the time until connect */
+	res = curl_easy_getinfo(curl, CURLINFO_CONNECT_TIME, &resp->connect_time);
+
+	/* get the time until the SSL/SSH handshake is completed */
+	res = curl_easy_getinfo(curl, CURLINFO_APPCONNECT_TIME, &resp->app_connect_time);
+
+	/* get the time until the file transfer */
+	res = curl_easy_getinfo(curl, CURLINFO_APPCONNECT_TIME, &resp->pre_transfer_time);
+
+	/* get the time until the first byte is received */
+	res = curl_easy_getinfo(curl, CURLINFO_STARTTRANSFER_TIME, &resp->start_transfer_time);
+
+	/* get total time of previous transfer */
+	res = curl_easy_getinfo(curl, CURLINFO_TOTAL_TIME, &resp->total_time);
+
+#if 0
+	curl_easy_getinfo(curl, CURLINFO_SPEED_UPLOAD_T, &speed_upload);
+	curl_easy_getinfo(curl, CURLINFO_TOTAL_TIME_T, &total_time);
+	fprintf(stderr, "Speed: %" CURL_FORMAT_CURL_OFF_T " bytes/sec during %"
+		CURL_FORMAT_CURL_OFF_T ".%06ld seconds\n",
+		speed_upload,
+		(total_time / 1000000), (long)(total_time % 1000000));
+#endif
+
+	if (res != CURLE_OK)
+	{
+		fprintf(stderr, "Returned error code: %d\n", res);
+		free(resp);
+		return NULL;
+	}
+	return resp;
+}
+
+/* API to send HTTP request to an URL */
+struct http_response *send_http_request(struct http_request *req)
 {
 	CURL *curl;
 	CURLcode res = CURLE_OK;
-	long response_code;
-	double namelookup;
-	double connect;
-	double start;
-	double total;
-	curl_off_t speed_upload, total_time;
 	struct curl_slist *list = NULL;
+	struct http_response *resp = NULL;
 
 	if (req == NULL)
 	{
 		fprintf(stderr, "HTTP request is NULL! Aborting...\n");
-		return CURLE_FAILED_INIT;
+		return NULL;
 	}
 
 	struct header_list *temp = req->h_list;
@@ -91,49 +184,11 @@ int send_http_request(struct http_request *req)
 		else
 		{
 			/* now extract transfer info */
+			resp = extract_stats(curl);
 
 			//printf("Total received bytes: %zu\n", chunk.len);
 			//printf("Received data:/n%s\n", chunk.buffer);
 			free(chunk.buffer);
-
-			/* get the last response code */
-			curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &response_code);
-			printf("Response code: %ld", response_code);
-
-			/* get the name lookup time */
-			res = curl_easy_getinfo(curl, CURLINFO_NAMELOOKUP_TIME, &namelookup);
-			if (CURLE_OK == res)
-			{
-				printf("Time: %.1f", namelookup);
-			}
-
-			/* get the time until connect */
-			res = curl_easy_getinfo(curl, CURLINFO_CONNECT_TIME, &connect);
-			if(CURLE_OK == res)
-			{
-				printf("Time: %.1f", connect);
-			}
-
-			/* get the time until the first byte is received */
-			res = curl_easy_getinfo(curl, CURLINFO_STARTTRANSFER_TIME, &start);
-			if(CURLE_OK == res)
-			{
-				printf("Time: %.1f", start);
-			}
-
-			/* get total time of previous transfer */
-			res = curl_easy_getinfo(curl, CURLINFO_TOTAL_TIME, &total);
-			if(CURLE_OK == res)
-			{
-				printf("Time: %.1f\n", total);
-			}
-
-			curl_easy_getinfo(curl, CURLINFO_SPEED_UPLOAD_T, &speed_upload);
-			curl_easy_getinfo(curl, CURLINFO_TOTAL_TIME_T, &total_time);
-			fprintf(stderr, "Speed: %" CURL_FORMAT_CURL_OFF_T " bytes/sec during %"
-				CURL_FORMAT_CURL_OFF_T ".%06ld seconds\n",
-				speed_upload,
-				(total_time / 1000000), (long)(total_time % 1000000));
 		}
 
 		curl_slist_free_all(list); /* free the list again */
@@ -141,5 +196,5 @@ int send_http_request(struct http_request *req)
 		/* always cleanup */
 		curl_easy_cleanup(curl);
 	}
-	return (int)res;
+	return resp;
 }
