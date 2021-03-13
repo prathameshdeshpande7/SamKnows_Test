@@ -13,7 +13,7 @@ test: $(NAME)_test
 	#LD_LIBRARY_PATH=. ./$(NAME)_test
 
 $(NAME)_test: lib$(NAME).so
-	$(CC) $(NAME)_test.c -o $@ -L. -l$(NAME)
+	$(CC) $(NAME)_test.c -o $@ -L. -l$(NAME) -lcurl
 
 lib$(NAME).so: lib$(NAME).so.$(VERSION)
 	ldconfig -v -n .

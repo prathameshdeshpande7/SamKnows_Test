@@ -19,4 +19,6 @@ struct http_request
 	char *url;			/* URL to issue the request to */
 };
 
+/* API to send http request to a URL */
+int send_http_request(struct http_request *req);
 #endif /* MYCURL_H */

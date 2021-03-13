@@ -38,7 +38,7 @@ static void print(struct header_list **head_ref)
 
 	while (temp != NULL)
 	{
-		printf("Data: %s\n", temp->val);
+		//printf("Data: %s\n", temp->val);
 		temp = temp->next;
 	}
 }
@@ -64,6 +64,8 @@ int main(int argc, char *argv[])
 	int ret = 0;
 	int n_req = 0; /* number of HTTP requests to make */
 	struct header_list *headers = NULL;
+	char *request_type;
+	char *url;
 	struct http_request req;
 	memset(&req, 0, sizeof(struct http_request));
 
@@ -106,6 +108,7 @@ int main(int argc, char *argv[])
 
 			case 'X':
 				fprintf(stdout, "Request - %s\n", optarg);
+				req.req_type = optarg;
 				break;
 
 			case 'H':
@@ -128,6 +131,7 @@ int main(int argc, char *argv[])
 
 			case 'U':
 				fprintf(stdout, "URL - %s\n", optarg);
+				req.url = optarg;
 				break;
 
 			case 'h':
@@ -164,7 +168,11 @@ int main(int argc, char *argv[])
 		putchar ('\n');
 	}
 
-	print(&headers);
+	req.h_list = headers;
+
+	ret = send_http_request(&req);
+	fprintf (stdout, "Sent HTTP request with ret code: %d\n", ret);
+
 	/* free the list of headers */
 	free_header_list(&headers);
 
