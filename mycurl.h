@@ -42,13 +42,16 @@ struct http_response
  * and various other statistics.
  *
  */
-void send_http_request(struct http_request *req, struct http_response *resp);
+void send_http_request(struct http_request *req,
+			struct http_response *resp);
 
 /* Add the values from the response */
-void add_stats(struct http_response *total, struct http_response *resp);
+void add_stats(struct http_response *total,
+		struct http_response *resp);
 
 /* Compute median */
-void compute_median(struct http_response *total, int n_requests);
+void compute_median(struct http_response *total,
+			int n_requests);
 
 /* Print the HTTP response */
 void print_http_response(struct http_response *resp);

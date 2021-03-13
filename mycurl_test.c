@@ -196,7 +196,7 @@ int main(int argc, char *argv[])
 				n_req = atoi(optarg);
 				if (n_req < 0)
 					n_req = 1;	/* set default for negative requests */
-				logmsg("Number of requests provided - %s, passed to http req - %d\n", optarg, n_req);
+				logmsg("Number of requests - %d\n", n_req);
 				req.n_req = n_req;
 				break;
 
@@ -211,6 +211,7 @@ int main(int argc, char *argv[])
 
 			case 'v':
 				logmsg("Verbose\n");
+				verbose_flag = 1;
 				break;
 
 			case '?':
