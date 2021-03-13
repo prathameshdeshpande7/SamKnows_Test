@@ -8,7 +8,9 @@ How to build and install
 ------------------------
 
 make clean
+
 make all
+
 sudo make install
 
 Use the above commands to clean, compile and install the test program.
