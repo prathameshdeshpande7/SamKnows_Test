@@ -34,7 +34,7 @@ On Linux
 
 - Use run.sh script to configure the number of requests, URL to send HTTP
 request to, pass headers to the request and set the request type.
-Then run ./run.sh to start of the tests. See the sample_output.txt file
+Then run ./run.sh to start the tests. See the sample_output.txt file
 for reference.
 
 On MacOSX
