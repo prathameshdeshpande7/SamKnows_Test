@@ -44,7 +44,11 @@ On MacOSX
 Features
 --------
 
-- Works on Linux and MacOSX
+- Supported on
+
+	CentOS Linux release 8.2.2004 (Core) kernel version 4.18.0-147.8.1.el8_1.x86_64
+
+	macOS Catalina version 10.15.5
 
 - Currently, only 'GET' HTTP request type is supported.
 
@@ -74,6 +78,11 @@ seen in sample_response_body.txt
 TODO
 ----
 
+- Needs to be ported to Windows, currently working on a forked origin/windows
+branch for adding this support. A more generic method to parse command-line
+parameters is required on Windows instead of getopt_long which works well
+for Linux and macOS.
+
 - For non-blocking behavior, curl_multi_perform needs to be used. This will
 enable us to issue simultaneous requests in parallel and speed-up processing.
 
@@ -94,6 +103,7 @@ Known Issues
 On MacOSX
 
 - Currently, run.sh is not working as expected and throwing error such as:
+
 dyld: Library not loaded: libmycurl.dylib
 Referenced from: /path/SamKnows_Test/./app/mycurl_test
 Reason: image not found
