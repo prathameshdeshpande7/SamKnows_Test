@@ -109,7 +109,7 @@ int main(int argc, char *argv[])
 {
 	int c;
 	int ret = 0;
-	int n_req = 0; /* number of HTTP requests to make */
+	int n_req = 1; /* number of HTTP requests to make, default 1 */
 	int requests = 0;
 	struct header_list *headers = NULL;
 	char *request_type;
@@ -197,7 +197,6 @@ int main(int argc, char *argv[])
 				if (n_req < 0)
 					n_req = 1;	/* set default for negative requests */
 				logmsg("Number of requests - %d\n", n_req);
-				req.n_req = n_req;
 				break;
 
 			case 'U':
@@ -241,6 +240,7 @@ int main(int argc, char *argv[])
 	}
 
 	req.h_list = headers;
+	req.n_req = n_req;
 
 	for (requests = 0; requests < req.n_req; requests++)
 	{
