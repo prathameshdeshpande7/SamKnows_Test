@@ -4,6 +4,44 @@ https://github.com/SamKnows/tests-and-metrics-test
 
 This is the main README file for this project.
 
+Structure of the project
+------------------------
+	.
+	├── app
+	│   ├── Makefile
+	│   └── mycurl_test.c
+	├── build.sh
+	├── lib
+	│   ├── Makefile
+	│   ├── mycurl.c
+	│   └── mycurl.h
+	├── Makefile
+	├── README.md
+	├── run.sh
+	└── test_output
+	    ├── sample_output.txt
+	    ├── sample_response_body.txt
+	    └── valgrind_test.txt
+
+	3 directories, 12 files
+
+- The top-level directory contains lib/, app/ and test_output/ folders.
+
+- lib/ contains the curl library code which executes the HTTP requests.
+
+- app/ contains the test program that uses the library in lib/
+
+- test_output/ contains the sample output from one of the runs, there is
+also a sample_response_body.txt along with a valgrind memory leak check
+report on the entire application.
+
+- The main Makefile invokes the Makefile's within lib/ and app/
+
+- build.sh provides support for make clean, make all and setting the
+LD_LIBRARY_PATH for Linux and DYLD_LIBRARY_PATH for macOS.
+
+- run.sh provides a test script to run the application.
+
 How to build and install
 ------------------------
 

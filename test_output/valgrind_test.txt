@@ -1,0 +1,73 @@
+prathamesh@pd-linux ~/fast_copy/SamKnows_Test (master) $ valgrind -s  ./app/mycurl_test -H "Accept: application/json" -H "Content-Type: application/json" -X GET -n  50 --header "Accept: application/xml" --url http://www.google.com/ 
+==9747== Memcheck, a memory error detector
+==9747== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==9747== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+==9747== Command: ./app/mycurl_test -H Accept:\ application/json -H Content-Type:\ application/json -X GET -n 50 --header Accept:\ application/xml --url http://www.google.com/
+==9747== 
+Header - "Accept: application/json"
+Header - "Content-Type: application/json"
+Request - GET
+Number of requests - 50
+Header - "Accept: application/xml"
+URL - http://www.google.com/
+001 SKTEST; IP addr: 216.239.38.120; HTTP resp code: 200; name_lookup: 0.186801; connect_time: 0.201053; app_connect: 0.000000; pre_transfer: 0.000000; start_transfer: 0.265777; total_time: 0.312806;
+002 SKTEST; IP addr: 216.239.38.120; HTTP resp code: 200; name_lookup: 0.012657; connect_time: 0.021016; app_connect: 0.000000; pre_transfer: 0.000000; start_transfer: 0.077915; total_time: 0.122954;
+003 SKTEST; IP addr: 216.239.38.120; HTTP resp code: 200; name_lookup: 0.011454; connect_time: 0.018102; app_connect: 0.000000; pre_transfer: 0.000000; start_transfer: 0.064302; total_time: 0.109089;
+004 SKTEST; IP addr: 216.239.38.120; HTTP resp code: 200; name_lookup: 0.011401; connect_time: 0.018470; app_connect: 0.000000; pre_transfer: 0.000000; start_transfer: 0.084679; total_time: 0.130348;
+005 SKTEST; IP addr: 216.239.38.120; HTTP resp code: 200; name_lookup: 0.011444; connect_time: 0.018440; app_connect: 0.000000; pre_transfer: 0.000000; start_transfer: 0.072280; total_time: 0.116731;
+006 SKTEST; IP addr: 216.239.38.120; HTTP resp code: 200; name_lookup: 0.013104; connect_time: 0.019473; app_connect: 0.000000; pre_transfer: 0.000000; start_transfer: 0.073900; total_time: 0.123295;
+007 SKTEST; IP addr: 216.239.38.120; HTTP resp code: 200; name_lookup: 0.013761; connect_time: 0.021038; app_connect: 0.000000; pre_transfer: 0.000000; start_transfer: 0.082285; total_time: 0.126866;
+008 SKTEST; IP addr: 216.239.38.120; HTTP resp code: 200; name_lookup: 0.011487; connect_time: 0.019729; app_connect: 0.000000; pre_transfer: 0.000000; start_transfer: 0.077983; total_time: 0.125394;
+009 SKTEST; IP addr: 216.239.38.120; HTTP resp code: 200; name_lookup: 0.013514; connect_time: 0.022111; app_connect: 0.000000; pre_transfer: 0.000000; start_transfer: 0.083477; total_time: 0.128977;
+010 SKTEST; IP addr: 216.239.38.120; HTTP resp code: 200; name_lookup: 0.012592; connect_time: 0.018626; app_connect: 0.000000; pre_transfer: 0.000000; start_transfer: 0.069859; total_time: 0.114540;
+011 SKTEST; IP addr: 216.239.38.120; HTTP resp code: 200; name_lookup: 0.011385; connect_time: 0.019264; app_connect: 0.000000; pre_transfer: 0.000000; start_transfer: 0.073255; total_time: 0.118555;
+012 SKTEST; IP addr: 216.239.38.120; HTTP resp code: 200; name_lookup: 0.012679; connect_time: 0.020237; app_connect: 0.000000; pre_transfer: 0.000000; start_transfer: 0.073775; total_time: 0.121616;
+013 SKTEST; IP addr: 216.239.38.120; HTTP resp code: 200; name_lookup: 0.013323; connect_time: 0.020374; app_connect: 0.000000; pre_transfer: 0.000000; start_transfer: 0.137089; total_time: 0.181635;
+014 SKTEST; IP addr: 216.239.38.120; HTTP resp code: 200; name_lookup: 0.016166; connect_time: 0.024079; app_connect: 0.000000; pre_transfer: 0.000000; start_transfer: 0.095345; total_time: 0.193914;
+015 SKTEST; IP addr: 216.239.38.120; HTTP resp code: 200; name_lookup: 0.039488; connect_time: 0.065914; app_connect: 0.000000; pre_transfer: 0.000000; start_transfer: 0.136994; total_time: 0.239106;
+016 SKTEST; IP addr: 216.239.38.120; HTTP resp code: 200; name_lookup: 0.038440; connect_time: 0.056415; app_connect: 0.000000; pre_transfer: 0.000000; start_transfer: 0.120827; total_time: 0.223332;
+017 SKTEST; IP addr: 216.239.38.120; HTTP resp code: 200; name_lookup: 0.031102; connect_time: 0.063228; app_connect: 0.000000; pre_transfer: 0.000000; start_transfer: 0.144218; total_time: 0.226536;
+018 SKTEST; IP addr: 216.239.38.120; HTTP resp code: 200; name_lookup: 0.013810; connect_time: 0.036543; app_connect: 0.000000; pre_transfer: 0.000000; start_transfer: 0.110178; total_time: 0.217167;
+019 SKTEST; IP addr: 216.239.38.120; HTTP resp code: 200; name_lookup: 0.038358; connect_time: 0.064203; app_connect: 0.000000; pre_transfer: 0.000000; start_transfer: 0.137844; total_time: 0.245481;
+020 SKTEST; IP addr: 216.239.38.120; HTTP resp code: 200; name_lookup: 0.038070; connect_time: 0.069324; app_connect: 0.000000; pre_transfer: 0.000000; start_transfer: 0.148360; total_time: 0.243720;
+021 SKTEST; IP addr: 216.239.38.120; HTTP resp code: 200; name_lookup: 0.015746; connect_time: 0.029906; app_connect: 0.000000; pre_transfer: 0.000000; start_transfer: 0.084625; total_time: 0.128954;
+022 SKTEST; IP addr: 216.239.38.120; HTTP resp code: 200; name_lookup: 0.015831; connect_time: 0.021860; app_connect: 0.000000; pre_transfer: 0.000000; start_transfer: 0.071899; total_time: 0.116690;
+023 SKTEST; IP addr: 216.239.38.120; HTTP resp code: 200; name_lookup: 0.012864; connect_time: 0.020276; app_connect: 0.000000; pre_transfer: 0.000000; start_transfer: 0.066682; total_time: 0.111380;
+024 SKTEST; IP addr: 216.239.38.120; HTTP resp code: 200; name_lookup: 0.012970; connect_time: 0.021800; app_connect: 0.000000; pre_transfer: 0.000000; start_transfer: 0.073895; total_time: 0.126325;
+025 SKTEST; IP addr: 216.239.38.120; HTTP resp code: 200; name_lookup: 0.011665; connect_time: 0.018412; app_connect: 0.000000; pre_transfer: 0.000000; start_transfer: 0.073805; total_time: 0.119938;
+026 SKTEST; IP addr: 216.239.38.120; HTTP resp code: 200; name_lookup: 0.011504; connect_time: 0.018577; app_connect: 0.000000; pre_transfer: 0.000000; start_transfer: 0.067851; total_time: 0.114266;
+027 SKTEST; IP addr: 216.239.38.120; HTTP resp code: 200; name_lookup: 0.012713; connect_time: 0.020054; app_connect: 0.000000; pre_transfer: 0.000000; start_transfer: 0.079834; total_time: 0.125402;
+028 SKTEST; IP addr: 216.239.38.120; HTTP resp code: 200; name_lookup: 0.016069; connect_time: 0.023087; app_connect: 0.000000; pre_transfer: 0.000000; start_transfer: 0.077712; total_time: 0.122370;
+029 SKTEST; IP addr: 216.239.38.120; HTTP resp code: 200; name_lookup: 0.011692; connect_time: 0.018563; app_connect: 0.000000; pre_transfer: 0.000000; start_transfer: 0.071447; total_time: 0.115903;
+030 SKTEST; IP addr: 216.239.38.120; HTTP resp code: 200; name_lookup: 0.011648; connect_time: 0.018878; app_connect: 0.000000; pre_transfer: 0.000000; start_transfer: 0.070797; total_time: 0.115564;
+031 SKTEST; IP addr: 216.239.38.120; HTTP resp code: 200; name_lookup: 0.013820; connect_time: 0.030330; app_connect: 0.000000; pre_transfer: 0.000000; start_transfer: 0.081292; total_time: 0.126067;
+032 SKTEST; IP addr: 216.239.38.120; HTTP resp code: 200; name_lookup: 0.016000; connect_time: 0.024324; app_connect: 0.000000; pre_transfer: 0.000000; start_transfer: 0.080130; total_time: 0.124879;
+033 SKTEST; IP addr: 216.239.38.120; HTTP resp code: 200; name_lookup: 0.039483; connect_time: 0.071730; app_connect: 0.000000; pre_transfer: 0.000000; start_transfer: 0.147605; total_time: 0.252355;
+034 SKTEST; IP addr: 216.239.38.120; HTTP resp code: 200; name_lookup: 0.038271; connect_time: 0.062533; app_connect: 0.000000; pre_transfer: 0.000000; start_transfer: 0.138407; total_time: 0.245132;
+035 SKTEST; IP addr: 216.239.38.120; HTTP resp code: 200; name_lookup: 0.038166; connect_time: 0.063020; app_connect: 0.000000; pre_transfer: 0.000000; start_transfer: 0.130184; total_time: 0.180191;
+036 SKTEST; IP addr: 216.239.38.120; HTTP resp code: 200; name_lookup: 0.013729; connect_time: 0.021910; app_connect: 0.000000; pre_transfer: 0.000000; start_transfer: 0.071712; total_time: 0.117235;
+037 SKTEST; IP addr: 216.239.38.120; HTTP resp code: 200; name_lookup: 0.013716; connect_time: 0.021731; app_connect: 0.000000; pre_transfer: 0.000000; start_transfer: 0.079487; total_time: 0.123105;
+038 SKTEST; IP addr: 216.239.38.120; HTTP resp code: 200; name_lookup: 0.013758; connect_time: 0.021268; app_connect: 0.000000; pre_transfer: 0.000000; start_transfer: 0.074007; total_time: 0.118536;
+039 SKTEST; IP addr: 216.239.38.120; HTTP resp code: 200; name_lookup: 0.011565; connect_time: 0.018935; app_connect: 0.000000; pre_transfer: 0.000000; start_transfer: 0.073248; total_time: 0.117982;
+040 SKTEST; IP addr: 216.239.38.120; HTTP resp code: 200; name_lookup: 0.011507; connect_time: 0.019197; app_connect: 0.000000; pre_transfer: 0.000000; start_transfer: 0.070865; total_time: 0.114838;
+041 SKTEST; IP addr: 216.239.38.120; HTTP resp code: 200; name_lookup: 0.013687; connect_time: 0.020968; app_connect: 0.000000; pre_transfer: 0.000000; start_transfer: 0.072955; total_time: 0.118551;
+042 SKTEST; IP addr: 216.239.38.120; HTTP resp code: 200; name_lookup: 0.012810; connect_time: 0.020442; app_connect: 0.000000; pre_transfer: 0.000000; start_transfer: 0.072434; total_time: 0.117196;
+043 SKTEST; IP addr: 216.239.38.120; HTTP resp code: 200; name_lookup: 0.011297; connect_time: 0.019208; app_connect: 0.000000; pre_transfer: 0.000000; start_transfer: 0.074817; total_time: 0.120066;
+044 SKTEST; IP addr: 216.239.38.120; HTTP resp code: 200; name_lookup: 0.011494; connect_time: 0.018551; app_connect: 0.000000; pre_transfer: 0.000000; start_transfer: 0.075554; total_time: 0.120076;
+045 SKTEST; IP addr: 216.239.38.120; HTTP resp code: 200; name_lookup: 0.011480; connect_time: 0.017952; app_connect: 0.000000; pre_transfer: 0.000000; start_transfer: 0.070766; total_time: 0.115590;
+046 SKTEST; IP addr: 216.239.38.120; HTTP resp code: 200; name_lookup: 0.013711; connect_time: 0.022107; app_connect: 0.000000; pre_transfer: 0.000000; start_transfer: 0.082258; total_time: 0.127058;
+047 SKTEST; IP addr: 216.239.38.120; HTTP resp code: 200; name_lookup: 0.011457; connect_time: 0.019295; app_connect: 0.000000; pre_transfer: 0.000000; start_transfer: 0.071648; total_time: 0.116349;
+048 SKTEST; IP addr: 216.239.38.120; HTTP resp code: 200; name_lookup: 0.012574; connect_time: 0.019516; app_connect: 0.000000; pre_transfer: 0.000000; start_transfer: 0.076299; total_time: 0.120872;
+049 SKTEST; IP addr: 216.239.38.120; HTTP resp code: 200; name_lookup: 0.012542; connect_time: 0.019555; app_connect: 0.000000; pre_transfer: 0.000000; start_transfer: 0.073851; total_time: 0.127172;
+050 SKTEST; IP addr: 216.239.38.120; HTTP resp code: 200; name_lookup: 0.012575; connect_time: 0.020129; app_connect: 0.000000; pre_transfer: 0.000000; start_transfer: 0.071021; total_time: 0.115475;
+
+Median of values
+SKTEST; IP addr: 216.239.38.120; HTTP resp code: 200; name_lookup: 0.020348; connect_time: 0.031635; app_connect: 0.000000; pre_transfer: 0.000000; start_transfer: 0.091149; total_time: 0.146752;
+==9747== 
+==9747== HEAP SUMMARY:
+==9747==     in use at exit: 0 bytes in 0 blocks
+==9747==   total heap usage: 11,081 allocs, 11,081 frees, 53,828,470 bytes allocated
+==9747== 
+==9747== All heap blocks were freed -- no leaks are possible
+==9747== 
+==9747== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
