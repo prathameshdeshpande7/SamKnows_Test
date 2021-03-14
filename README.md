@@ -16,7 +16,8 @@ On Linux
 - export LD_LIBRARY_PATH=lib
 
 Use the above commands to clean and compile the test program.
-Alternatively, issue ./build.sh script which will do the above things.
+Alternatively, execute 'source ./build.sh' on the command line which will
+clean, make and configure the shared library path correctly.
 
 How to run
 ----------
@@ -28,8 +29,14 @@ request to, pass headers to the request and set the request type.
 Then run ./run.sh to start of the tests. See the sample_output.txt file
 for reference.
 
+On MacOSX
+
+- Run the command inside run.sh manually to test the application.
+
 Features
 --------
+
+- Works on Linux and MacOSX
 
 - Currently, only 'GET' HTTP request type is supported.
 
@@ -72,3 +79,15 @@ needs to be added.
 
 - The application requires a full fledged test-suite covering all possible
 success, failure and corner cases.
+
+Known Issues
+------------
+
+On MacOSX
+
+- Currently, run.sh is not working as expected and throwing error such as:
+dyld: Library not loaded: libmycurl.dylib
+Referenced from: /path/SamKnows_Test/./app/mycurl_test
+Reason: image not found
+
+- Manually executing the application works as expected.

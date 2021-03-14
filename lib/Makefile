@@ -10,6 +10,9 @@ endif
 ifeq ($(uname_S), Linux)
 	target = libmycurl.so
 endif
+ifeq ($(uname_S), Darwin)
+	target = libmycurl.dylib
+endif
 
 %.o: %.c
 	gcc  -c $<  -fPIC  -o $@
@@ -18,4 +21,4 @@ $(target): mycurl.o
 	gcc  $^  -shared -lcurl -o $@
 
 clean:
-	$(RM) *.o *.so* *.dll
+	$(RM) *.o *.so* *.dll *.dylib

@@ -10,6 +10,9 @@ endif
 ifeq ($(uname_S), Linux)
 	target = mycurl_test
 endif
+ifeq ($(uname_S), Darwin)
+	target = mycurl_test
+endif
 
 %.o: %.c
 	gcc  -c $< -I ../lib  -o $@
