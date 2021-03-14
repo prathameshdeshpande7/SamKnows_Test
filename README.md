@@ -108,4 +108,4 @@ dyld: Library not loaded: libmycurl.dylib
 Referenced from: /path/SamKnows_Test/./app/mycurl_test
 Reason: image not found
 
-- Manually executing the application works as expected.
+Manually executing the application works as expected.
