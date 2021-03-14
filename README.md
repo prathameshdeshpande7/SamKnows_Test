@@ -21,9 +21,10 @@ Structure of the project
 	└── test_output
 	    ├── sample_output.txt
 	    ├── sample_response_body.txt
+	    ├── syslog_linux.txt
 	    └── valgrind_test.txt
 
-	3 directories, 12 files
+	3 directories, 13 files
 
 - The top-level directory contains lib/, app/ and test_output/ folders.
 
@@ -33,7 +34,7 @@ Structure of the project
 
 - test_output/ contains the sample output from one of the runs, there is
 also a sample_response_body.txt along with a valgrind memory leak check
-report on the entire application.
+report on the entire application and a sample syslog captured on linux.
 
 - The main Makefile invokes the Makefile's within lib/ and app/
 
@@ -67,6 +68,14 @@ clean, make and configure the shared library path correctly.
 
 How to run
 ----------
+
+- The most basic request is as follows:
+	./app/mycurl_test  -H "Content-Type: application/json" -n 10 --header "Accept: application/xml"  -X GET --url http://www.google.com/
+
+- The request type '-X' and '--url' are mandatory arguments.
+
+- Number of requests '-n' is an optional argument, default n is set to a
+single request. If '-n' is passed a negative value, n is reset to 1.
 
 On Linux
 

@@ -112,11 +112,11 @@ int main(int argc, char *argv[])
 	int n_req = 1; /* number of HTTP requests to make, default 1 */
 	int requests = 0;
 	struct header_list *headers = NULL;
-	char *request_type;
 	char *url;
 	struct http_request req;
 	struct http_response resp;
 	struct http_response total;
+
 	memset(&req, 0, sizeof(struct http_request));
 	memset(&resp, 0, sizeof(struct http_response));
 	memset(&total, 0, sizeof(struct http_response));
@@ -158,7 +158,7 @@ int main(int argc, char *argv[])
 			{NULL,      0,                 NULL,  0 }
 		};
 
-		c = getopt_long(argc, argv, "vbH:X:U:n:h", long_options, &option_index);
+		c = getopt_long(argc, argv, "vbH:X:U:n:h:012", long_options, &option_index);
 
 		/* Detect the end of the options. */
 		if (c == -1)
@@ -237,6 +237,12 @@ int main(int argc, char *argv[])
 		while (optind < argc)
 			logmsg("%s ", argv[optind++]);
 		putchar ('\n');
+	}
+
+	if (req.url == NULL || req.req_type == NULL)
+	{
+		logmsg("Missing arguments, aborting request!\n");
+		exit(EXIT_FAILURE);
 	}
 
 	req.h_list = headers;
