@@ -15,6 +15,14 @@ On Linux
 
 - export LD_LIBRARY_PATH=lib
 
+On MacOSX
+
+- make clean
+
+- make all
+
+- export DYLD_LIBRARY_PATH=lib
+
 Use the above commands to clean and compile the test program.
 Alternatively, execute 'source ./build.sh' on the command line which will
 clean, make and configure the shared library path correctly.
