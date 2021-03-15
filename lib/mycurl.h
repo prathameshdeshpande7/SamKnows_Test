@@ -49,9 +49,15 @@ void send_http_request(struct http_request *req,
 void add_stats(struct http_response *total,
 		struct http_response *resp);
 
-/* Compute median */
-void compute_median(struct http_response *total,
+/* Compute mean */
+void compute_mean(struct http_response *total,
 			int n_requests);
+
+/* Compute median */
+double compute_median(double time[], int n);
+
+/* sort the time array using bubble sort */
+void bubble_sort(double time[], int n);
 
 /* Print the HTTP response */
 void print_http_response(struct http_response *resp);

@@ -116,10 +116,18 @@ int main(int argc, char *argv[])
 	struct http_request req;
 	struct http_response resp;
 	struct http_response total;
+	struct http_response median_result;
+	double *namelookup_time;
+	double *connect_time;
+	double *app_connect_time;
+	double *pre_transfer_time;
+	double *start_transfer_time;
+	double *total_time;
 
 	memset(&req, 0, sizeof(struct http_request));
 	memset(&resp, 0, sizeof(struct http_response));
 	memset(&total, 0, sizeof(struct http_response));
+	memset(&median_result, 0, sizeof(struct http_response));
 
 	sigset_t set;
 	sigemptyset(&set);
@@ -248,18 +256,92 @@ int main(int argc, char *argv[])
 	req.h_list = headers;
 	req.n_req = n_req;
 
+	/* allocate memory for storing the various times */
+	namelookup_time = (double *)calloc(1, n_req * sizeof(double));
+	if (namelookup_time == NULL)
+	{
+		fatal("Out of memory\n");
+	}
+	connect_time = (double *)calloc(1, n_req * sizeof(double));
+	if (connect_time == NULL)
+	{
+		fatal("Out of memory\n");
+	}
+	app_connect_time = (double *)calloc(1, n_req * sizeof(double));
+	if (app_connect_time == NULL)
+	{
+		fatal("Out of memory\n");
+	}
+	pre_transfer_time = (double *)calloc(1, n_req * sizeof(double));
+	if (pre_transfer_time == NULL)
+	{
+		fatal("Out of memory\n");
+	}
+	start_transfer_time = (double *)calloc(1, n_req * sizeof(double));
+	if (start_transfer_time == NULL)
+	{
+		fatal("Out of memory\n");
+	}
+	total_time = (double *)calloc(1, n_req * sizeof(double));
+	if (total_time == NULL)
+	{
+		fatal("Out of memory\n");
+	}
+
 	for (requests = 0; requests < req.n_req; requests++)
 	{
 		logmsg("%03d ", requests + 1);
+		/* issue HTTP request */
 		send_http_request(&req, &resp);
+
+		namelookup_time[requests] = resp.namelookup_time;
+		connect_time[requests] = resp.connect_time;
+		app_connect_time[requests] = resp.app_connect_time;
+		pre_transfer_time[requests] = resp.pre_transfer_time;
+		start_transfer_time[requests] = resp.start_transfer_time;
+		total_time[requests] = resp.total_time;
+
 		add_stats(&total, &resp);
 		print_http_response(&resp);
 	}
-	compute_median(&total, req.n_req);
+	//compute_mean(&total, req.n_req);
+
+	bubble_sort(namelookup_time, req.n_req);
+	median_result.namelookup_time = compute_median(namelookup_time, req.n_req);
+
+	bubble_sort(connect_time, req.n_req);
+	median_result.connect_time = compute_median(connect_time, req.n_req);
+
+	bubble_sort(app_connect_time, req.n_req);
+	median_result.app_connect_time = compute_median(app_connect_time, req.n_req);
+
+	bubble_sort(pre_transfer_time, req.n_req);
+	median_result.pre_transfer_time = compute_median(pre_transfer_time, req.n_req);
+
+	bubble_sort(start_transfer_time, req.n_req);
+	median_result.start_transfer_time = compute_median(start_transfer_time, req.n_req);
+
+	bubble_sort(total_time, req.n_req);
+	median_result.total_time = compute_median(total_time, req.n_req);
+
+	strcpy(median_result.ip, total.ip);
+	median_result.response_code = total.response_code;
+
 	logmsg("\n");
 
+	//logmsg("Mean of values\n");
+	//print_http_response(&total);
+
 	logmsg("Median of values\n");
-	print_http_response(&total);
+	print_http_response(&median_result);
+
+	/* free the calloc'd double arrays */
+	free(total_time);
+	free(start_transfer_time);
+	free(pre_transfer_time);
+	free(app_connect_time);
+	free(connect_time);
+	free(namelookup_time);
 
 	/* free the list of headers */
 	free_header_list(&headers);

@@ -122,27 +122,54 @@ in syslog because of the size of the data. However, it can be enabled in
 the future versions if needed. Alternatively, sample response body can be
 seen in sample_response_body.txt
 
+Test setup and tests run
+------------------------
+
+- Linux setup was directly connected to the internet using a physical Ethernet
+LAN connection.
+
+- macOS was connected using WiFi to the Internet service provider.
+
+- Testing was done by issuing requests while connected to the network.
+
+- Negative testing was done by abruptly closing the internet connection either
+by removing the LAN cable, disconnecting WiFi or powering off the modem and
+router.
+
+- The app will abort requests if the mandatory fields are missing on the
+command-line.
+
 TODO
 ----
 
-- Needs to be ported to Windows, currently working on a forked origin/windows
+- Porting on Windows is remaining, currently working on a forked origin/windows
 branch for adding this support. A more generic method to parse command-line
 parameters is required on Windows instead of getopt_long which works well
 for Linux and macOS.
 
-- For non-blocking behavior, curl_multi_perform needs to be used. This will
-enable us to issue simultaneous requests in parallel and speed-up processing.
+- For non-blocking behavior, curl_multi_perform is not yet supported in this
+version. This will enable us to issue simultaneous requests in parallel and
+speed-up processing.
 
-- Support for other HTTP request types such as PUT, POST and DELETE needs to
+- Support for other HTTP request types such as PUT, POST and DELETE yet to
 be added.
 
 - Support for accepting username and password fields while issuing a request
-needs to be added.
+yet to be added.
 
 - Support for a flag such as --dump-headers to a file can be added.
 
 - The application requires a full fledged test-suite covering all possible
 success, failure and corner cases.
+
+- Wireshark TCP packet capture needs to be used to check the packets actually
+arriving on the network and over the TCP connection.
+
+- Performance of the network requests yet to be analysed.
+
+- Bubble sort is used to compute median at the moment so the complexity is O(N^2)
+where N is the number of requests. Time complexity for sorting can be reduced by
+using merge sort O(NlogN) best-case instead of bubble sort.
 
 Known Issues
 ------------
@@ -156,3 +183,6 @@ Referenced from: /path/SamKnows_Test/./app/mycurl_test
 Reason: image not found
 
 Manually executing the application works as expected.
+
+- Earlier version computed mean of the values instead of median. This version
+calculates it correctly.

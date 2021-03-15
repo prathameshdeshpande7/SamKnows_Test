@@ -69,8 +69,8 @@ void add_stats(struct http_response *total, struct http_response *resp)
 	total->total_time += resp->total_time;
 }
 
-/* Compute median */
-void compute_median(struct http_response *total, int n_requests)
+/* Compute mean */
+void compute_mean(struct http_response *total, int n_requests)
 {
 	total->namelookup_time /= n_requests;
 	total->connect_time /= n_requests;
@@ -78,6 +78,42 @@ void compute_median(struct http_response *total, int n_requests)
 	total->pre_transfer_time /= n_requests;
 	total->start_transfer_time /= n_requests;
 	total->total_time /= n_requests;
+}
+
+void swap(double *a, double *b)
+{
+	double temp = *a;
+	*a = *b;
+	*b = temp;
+}
+
+void bubble_sort(double time[], int n)
+{
+	int i, j;
+	double temp;
+
+	for (i = 0; i < n - 1; i++)
+	{
+		for (j = 0; j < n - i - 1; j++)
+		{
+			if (time[j] > time[j + 1])
+			{
+				swap(&time[j], &time[j + 1]);
+			}
+		}
+	}
+}
+
+/* compute median */
+double compute_median(double time[], int n)
+{
+	/* n is even */
+	if (n % 2 != 0)
+	{
+		return time[n / 2];
+	}
+	/* n is odd */
+	return (time[(n - 1) / 2] + time[n / 2]) / 2.0;
 }
 
 size_t write_cb(void *data, size_t size, size_t nmemb, void *userdata)

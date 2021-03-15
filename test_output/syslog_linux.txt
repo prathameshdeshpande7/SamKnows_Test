@@ -1,30 +1,29 @@
-8218 Mar 14 19:27:20 pd-linux mycurl_test[4904]: Request - GET
-8219 Mar 14 19:27:20 pd-linux mycurl_test[4904]: Header - "Content-Type: application/json"
-8220 Mar 14 19:27:20 pd-linux mycurl_test[4904]: Header - "Accept: application/json"
-8221 Mar 14 19:27:20 pd-linux mycurl_test[4904]: Header - "Accept-Charset: utf-8"
-8222 Mar 14 19:27:20 pd-linux mycurl_test[4904]: Number of requests - 10
-8223 Mar 14 19:27:20 pd-linux mycurl_test[4904]: URL - http://www.google.com
-8224 Mar 14 19:27:20 pd-linux mycurl_test[4904]: 001
-8225 Mar 14 19:27:20 pd-linux mycurl_test[4904]: SKTEST; IP addr: 216.239.38.120; HTTP resp code: 200; name_lookup: 0.008588; connect_time: 0.016586; app_connect: 0.000000; pre_transfer: 0.000000; start_transfer     : 0.070606; total_time: 0.114362;
-8226 Mar 14 19:27:20 pd-linux mycurl_test[4904]: 002
-8227 Mar 14 19:27:20 pd-linux mycurl_test[4904]: SKTEST; IP addr: 216.239.38.120; HTTP resp code: 200; name_lookup: 0.008429; connect_time: 0.014711; app_connect: 0.000000; pre_transfer: 0.000000; start_transfer     : 0.067598; total_time: 0.112327;
-8228 Mar 14 19:27:20 pd-linux mycurl_test[4904]: 003
-8229 Mar 14 19:27:20 pd-linux mycurl_test[4904]: SKTEST; IP addr: 216.239.38.120; HTTP resp code: 200; name_lookup: 0.010475; connect_time: 0.017435; app_connect: 0.000000; pre_transfer: 0.000000; start_transfer     : 0.066632; total_time: 0.111852;
-8230 Mar 14 19:27:20 pd-linux mycurl_test[4904]: 004
-8231 Mar 14 19:27:20 pd-linux mycurl_test[4904]: SKTEST; IP addr: 216.239.38.120; HTTP resp code: 200; name_lookup: 0.010659; connect_time: 0.017874; app_connect: 0.000000; pre_transfer: 0.000000; start_transfer     : 0.069836; total_time: 0.113600;
-8232 Mar 14 19:27:20 pd-linux mycurl_test[4904]: 005
-8233 Mar 14 19:27:20 pd-linux mycurl_test[4904]: SKTEST; IP addr: 216.239.38.120; HTTP resp code: 200; name_lookup: 0.010704; connect_time: 0.017699; app_connect: 0.000000; pre_transfer: 0.000000; start_transfer     : 0.066149; total_time: 0.110595;
-8234 Mar 14 19:27:20 pd-linux mycurl_test[4904]: 006
-8235 Mar 14 19:27:20 pd-linux mycurl_test[4904]: SKTEST; IP addr: 216.239.38.120; HTTP resp code: 200; name_lookup: 0.008448; connect_time: 0.016396; app_connect: 0.000000; pre_transfer: 0.000000; start_transfer     : 0.076866; total_time: 0.120677;
-8236 Mar 14 19:27:20 pd-linux mycurl_test[4904]: 007
-8237 Mar 14 19:27:21 pd-linux mycurl_test[4904]: SKTEST; IP addr: 216.239.38.120; HTTP resp code: 200; name_lookup: 0.007381; connect_time: 0.014405; app_connect: 0.000000; pre_transfer: 0.000000; start_transfer     : 0.071420; total_time: 0.116157;
-8238 Mar 14 19:27:21 pd-linux mycurl_test[4904]: 008
-8239 Mar 14 19:27:21 pd-linux mycurl_test[4904]: SKTEST; IP addr: 216.239.38.120; HTTP resp code: 200; name_lookup: 0.010786; connect_time: 0.018248; app_connect: 0.000000; pre_transfer: 0.000000; start_transfer     : 0.069868; total_time: 0.114165;
-8240 Mar 14 19:27:21 pd-linux mycurl_test[4904]: 009
-8241 Mar 14 19:27:21 pd-linux mycurl_test[4904]: SKTEST; IP addr: 216.239.38.120; HTTP resp code: 200; name_lookup: 0.010734; connect_time: 0.018034; app_connect: 0.000000; pre_transfer: 0.000000; start_transfer     : 0.081559; total_time: 0.125977;
-8242 Mar 14 19:27:21 pd-linux mycurl_test[4904]: 010
-8243 Mar 14 19:27:21 pd-linux mycurl_test[4904]: SKTEST; IP addr: 216.239.38.120; HTTP resp code: 200; name_lookup: 0.007501; connect_time: 0.015307; app_connect: 0.000000; pre_transfer: 0.000000; start_transfer     : 0.073744; total_time: 0.117458;
-8244 Mar 14 19:27:21 pd-linux mycurl_test[4904]: 
-8245 Mar 14 19:27:21 pd-linux mycurl_test[4904]: Median of values
-8246 Mar 14 19:27:21 pd-linux mycurl_test[4904]: SKTEST; IP addr: 216.239.38.120; HTTP resp code: 200; name_lookup: 0.009371; connect_time: 0.016669; app_connect: 0.000000; pre_transfer: 0.000000; start_transfer     : 0.071428; total_time: 0.115717;
-
+10419 Mar 15 00:56:29 pd-linux mycurl_test[37748]: Request - GET
+10420 Mar 15 00:56:29 pd-linux mycurl_test[37748]: Header - "Content-Type: application/json"
+10421 Mar 15 00:56:29 pd-linux mycurl_test[37748]: Header - "Accept: application/json"
+10422 Mar 15 00:56:29 pd-linux mycurl_test[37748]: Header - "Accept-Charset: utf-8"
+10423 Mar 15 00:56:29 pd-linux mycurl_test[37748]: Number of requests - 10
+10424 Mar 15 00:56:29 pd-linux mycurl_test[37748]: URL - http://www.google.com
+10425 Mar 15 00:56:29 pd-linux mycurl_test[37748]: 001
+10426 Mar 15 00:56:29 pd-linux mycurl_test[37748]: SKTEST; IP addr: 2a00:1450:4009:817::2004; HTTP resp code: 200; name_lookup: 0.008302; connect_time: 0.014247; app_connect: 0.000000; pre_transfer: 0.000000; st      art_transfer: 0.057328; total_time: 0.079057;
+10427 Mar 15 00:56:29 pd-linux mycurl_test[37748]: 002
+10428 Mar 15 00:56:29 pd-linux mycurl_test[37748]: SKTEST; IP addr: 2a00:1450:4009:817::2004; HTTP resp code: 200; name_lookup: 0.008467; connect_time: 0.014043; app_connect: 0.000000; pre_transfer: 0.000000; st      art_transfer: 0.065650; total_time: 0.087328;
+10429 Mar 15 00:56:29 pd-linux mycurl_test[37748]: 003
+10430 Mar 15 00:56:29 pd-linux mycurl_test[37748]: SKTEST; IP addr: 2a00:1450:4009:817::2004; HTTP resp code: 200; name_lookup: 0.006179; connect_time: 0.012480; app_connect: 0.000000; pre_transfer: 0.000000; st      art_transfer: 0.055887; total_time: 0.077590;
+10431 Mar 15 00:56:29 pd-linux mycurl_test[37748]: 004
+10432 Mar 15 00:56:29 pd-linux mycurl_test[37748]: SKTEST; IP addr: 2a00:1450:4009:817::2004; HTTP resp code: 200; name_lookup: 0.006346; connect_time: 0.011987; app_connect: 0.000000; pre_transfer: 0.000000; st      art_transfer: 0.054297; total_time: 0.076440;
+10433 Mar 15 00:56:29 pd-linux mycurl_test[37748]: 005
+10434 Mar 15 00:56:29 pd-linux mycurl_test[37748]: SKTEST; IP addr: 2a00:1450:4009:817::2004; HTTP resp code: 200; name_lookup: 0.006208; connect_time: 0.011241; app_connect: 0.000000; pre_transfer: 0.000000; st      art_transfer: 0.055435; total_time: 0.078406;
+10435 Mar 15 00:56:29 pd-linux mycurl_test[37748]: 006
+10436 Mar 15 00:56:29 pd-linux mycurl_test[37748]: SKTEST; IP addr: 2a00:1450:4009:817::2004; HTTP resp code: 200; name_lookup: 0.006314; connect_time: 0.011461; app_connect: 0.000000; pre_transfer: 0.000000; st      art_transfer: 0.056156; total_time: 0.078102;
+10437 Mar 15 00:56:29 pd-linux mycurl_test[37748]: 007
+10438 Mar 15 00:56:29 pd-linux mycurl_test[37748]: SKTEST; IP addr: 2a00:1450:4009:817::2004; HTTP resp code: 200; name_lookup: 0.008367; connect_time: 0.013985; app_connect: 0.000000; pre_transfer: 0.000000; st      art_transfer: 0.054060; total_time: 0.076456;
+10439 Mar 15 00:56:29 pd-linux mycurl_test[37748]: 008
+10440 Mar 15 00:56:29 pd-linux mycurl_test[37748]: SKTEST; IP addr: 2a00:1450:4009:817::2004; HTTP resp code: 200; name_lookup: 0.009434; connect_time: 0.015598; app_connect: 0.000000; pre_transfer: 0.000000; st      art_transfer: 0.059724; total_time: 0.086718;
+10441 Mar 15 00:56:29 pd-linux mycurl_test[37748]: 009
+10442 Mar 15 00:56:29 pd-linux mycurl_test[37748]: SKTEST; IP addr: 2a00:1450:4009:817::2004; HTTP resp code: 200; name_lookup: 0.010366; connect_time: 0.016137; app_connect: 0.000000; pre_transfer: 0.000000; st      art_transfer: 0.065633; total_time: 0.088696;
+10443 Mar 15 00:56:29 pd-linux mycurl_test[37748]: 010
+10444 Mar 15 00:56:29 pd-linux mycurl_test[37748]: SKTEST; IP addr: 2a00:1450:4009:817::2004; HTTP resp code: 200; name_lookup: 0.008369; connect_time: 0.014200; app_connect: 0.000000; pre_transfer: 0.000000; st      art_transfer: 0.063567; total_time: 0.087476;
+10445 Mar 15 00:56:29 pd-linux mycurl_test[37748]: 
+10446 Mar 15 00:56:29 pd-linux mycurl_test[37748]: Median of values
+10447 Mar 15 00:56:29 pd-linux mycurl_test[37748]: SKTEST; IP addr: 2a00:1450:4009:817::2004; HTTP resp code: 200; name_lookup: 0.008334; connect_time: 0.014014; app_connect: 0.000000; pre_transfer: 0.000000; st      art_transfer: 0.056742; total_time: 0.078732;
